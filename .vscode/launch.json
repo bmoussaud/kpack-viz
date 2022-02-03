@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ReactKpackVizApplication<react-kpack-viz>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "org.moussaud.kpack.reactkpackviz.ReactKpackVizApplication",
+            "projectName": "react-kpack-viz",
+            "args": ""
+        }
+    ]
+}

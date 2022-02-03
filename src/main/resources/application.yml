@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: kpack-viz
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    org.moussaud.kpack: "error"
+    

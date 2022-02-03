@@ -1,0 +1,43 @@
+{
+  "nodes": [
+    {"id": "cnb-springboot-image", "kind":"image", "group": 1, "val": 10},
+    {"id": "springboot-builder-11.0.10", "kind":"builder", "group": 2, "val": 10},
+    {"id": "springboot-builder-11.0.12", "kind":"builder",  "group": 2, "val": 10},
+    {"id": "springboot-builder-11.0.12-cve", "kind":"builder",  "group": 2,"val": 10},
+    {"id": "awesomedemo-stack", "kind":"stack", "group": 3, "val": 10},
+    {"id": "awesomedemo-store-v1", "kind":"store", "group": 4, "val": 10},
+    {"id": "awesomedemo-store-v2", "kind":"store", "group": 4, "val": 10},
+
+    {"id": "gcr.io/paketo-buildpacks/java:5.5.0", "group": 5,"val": 5},
+    {"id": "gcr.io/paketo-buildpacks/java:5.13.0", "group": 5,"val": 5},
+    {"id": "gcr.io/paketo-buildpacks/go:0.12.0", "group": 5,"val": 5},
+    {"id": "gcr.io/paketo-buildpacks/nodejs:0.11.0", "group": 5,"val": 5},
+    {"id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0", "group": 5,"val": 5}, 
+    {"id": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack", "group": 5,"val": 5}
+  ],
+  "links": [
+    {"source": "cnb-springboot-image", "target": "springboot-builder-11.0.10", "value": 100},
+    {"source": "springboot-builder-11.0.10", "target": "awesomedemo-stack", "value": 90},
+    {"source": "springboot-builder-11.0.10", "target": "awesomedemo-store-v1", "value": 70},
+    {"source": "springboot-builder-11.0.12", "target": "awesomedemo-stack", "value": 70},
+    {"source": "springboot-builder-11.0.12", "target": "awesomedemo-store-v2", "value": 70},
+
+    {"source": "springboot-builder-11.0.12-cve", "target": "awesomedemo-stack", "value": 50},
+    {"source": "springboot-builder-11.0.12-cve", "target": "awesomedemo-store-v2", "value": 50},
+
+    {"source": "awesomedemo-store-v1", "target": "gcr.io/paketo-buildpacks/java:5.5.0", "value": 20},
+    {"source": "awesomedemo-store-v1", "target": "gcr.io/paketo-buildpacks/go:0.12.0", "value": 20},
+    {"source": "awesomedemo-store-v1", "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0", "value": 20},
+    {"source": "awesomedemo-store-v1", "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0", "value": 20},
+    {"source": "awesomedemo-store-v1", "target": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack", "value": 20},
+
+    {"source": "awesomedemo-store-v2", "target": "gcr.io/paketo-buildpacks/java:5.13.0", "value": 2},
+    {"source": "awesomedemo-store-v2", "target": "gcr.io/paketo-buildpacks/go:0.12.0", "value": 2},
+    {"source": "awesomedemo-store-v2", "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0", "value": 2},
+    {"source": "awesomedemo-store-v2", "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0", "value": 2},
+    {"source": "awesomedemo-store-v2", "target": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack", "value": 2}
+
+    
+  ]
+}
+

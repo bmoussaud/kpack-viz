@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    
+</head>
+
+<body>
+    <div id="graph"></div>
+
+    <script type="module">
+
+        import * as d3 from "https://cdn.skypack.dev/d3@7";
+
+        const div = d3.selectAll("div");
+
+        graph = FileAttachment("graph.json").json()
+
+        chart = ForceGraph(graph, {
+                nodeId: d => d.id,
+                nodeGroup: d => d.group,
+                nodeTitle: d => `${d.id} (${d.group})`,
+                width,
+                height: 680,
+                invalidation // a promise to stop the simulation when the cell is re-run
+            })
+
+    </script>
+
+    
+</body>
+</html>

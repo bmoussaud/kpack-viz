@@ -1,0 +1,121 @@
+<head>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+
+  <script src="//bundle.run/@yarnpkg/lockfile"></script>
+
+  <script src="//unpkg.com/dagre/dist/dagre.min.js"></script>
+  <script src="//unpkg.com/accessor-fn"></script>
+
+  <script src="//unpkg.com/force-graph"></script>
+  <!--<script src="../../dist/force-graph.js"></script>-->
+</head>
+
+<body>
+  <div id="graph"></div>
+
+  <script>
+    const Graph = ForceGraph()(document.getElementById('graph'))
+      .nodeId('id')
+      .nodeLabel('id')
+      .nodeAutoColorBy('group')
+      .cooldownTicks(0) // pre-defined layout, cancel force engine iterations
+      .linkDirectionalArrowLength(3)
+      .linkDirectionalArrowRelPos(1)
+      .linkCurvature(d =>
+        0.07 * // max curvature
+        //   curve outwards from source, using gradual straightening within a margin of a few px
+        Math.max(-1, Math.min(1, (d.source.x - d.target.x) / 5)) *
+        Math.max(-1, Math.min(1, (d.target.y - d.source.y) / 5))
+      );
+
+    fetch('datasets/kpack3.json').then(res => res.json()).then(data => {
+      const nodeDiameter = Graph.nodeRelSize() * 10;
+      const layoutData = getLayout(data.nodes, data.links, {
+        nodeWidth: nodeDiameter,
+        nodeHeight: nodeDiameter,
+        nodesep: nodeDiameter * 0.5,
+        ranksep: nodeDiameter * Math.sqrt(data.nodes.length) * 0.6,
+
+        // root nodes aligned on top
+        rankDir: 'RL',
+        ranker: 'longest-path',
+        linkSource: 'target',
+        linkTarget: 'source'
+      });
+      //layoutData.nodes.forEach(node => { node.fx = node.x; node.fy = node.y; }); // fix nodes
+      Graph.nodeCanvasObject((node, ctx, globalScale) => {
+          const label = node.id;
+          const fontSize = 18 / globalScale;
+          ctx.font = `${fontSize}px Sans-Serif`;
+          const textWidth = ctx.measureText(label).width;
+          const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = node.color;
+          ctx.fillText(label, node.x, node.y);
+
+          node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
+        })
+      Graph.graphData(layoutData);
+      Graph.zoomToFit();
+    });
+
+    //
+
+    function getLayout(nodes, links, {
+      nodeId = 'id',
+      linkSource = 'source',
+      linkTarget = 'target',
+      nodeWidth = 0,
+      nodeHeight = 0,
+      ...graphCfg
+    } = {}) {
+      const getNodeWidth = accessorFn(nodeWidth);
+      const getNodeHeight = accessorFn(nodeHeight);
+
+      const g = new dagre.graphlib.Graph();
+      g.setGraph({
+        // rankDir: 'LR',
+        // ranker: 'network-simplex' // 'tight-tree', 'longest-path'
+        // acyclicer: 'greedy'
+        nodesep: 5,
+        edgesep: 1,
+        ranksep: 20,
+        ...graphCfg
+      });
+
+      nodes.forEach(node =>
+        g.setNode(
+          node[nodeId],
+          Object.assign({}, node, {
+            width: getNodeWidth(node),
+            height: getNodeHeight(node)
+          })
+        )
+      );
+      links.forEach(link =>
+        g.setEdge(link[linkSource], link[linkTarget], Object.assign({}, link))
+      );
+
+      dagre.layout(g);
+
+      return {
+        nodes: g.nodes().map(n => {
+          const node = g.node(n);
+          delete node.width;
+          delete node.height;
+          return node;
+        }),
+        links: g.edges().map(e => g.edge(e))
+      };
+    }
+  </script>
+</body>

@@ -1,6 +1,12 @@
 <head>
-  <style> body { margin: 0; } </style>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
 
+  <script src="//unpkg.com/d3-quadtree"></script>
+  <script src="//unpkg.com/d3-force"></script>
   <script src="//unpkg.com/force-graph"></script>
   <!--<script src="../../dist/force-graph.js"></script>-->
 </head>
@@ -8,17 +14,34 @@
 <body>
   <div id="graph"></div>
 
+
+
+
   <script>
-    fetch('datasets/kpack.json').then(res => res.json()).then(data => {
+    const NODE_REL_SIZE = 1;
+
+    fetch('datasets/kpack4.json').then(res => res.json()).then(data => {
       const Graph = ForceGraph()
-      (document.getElementById('graph'))
-        .graphData(data)
-        .linkDirectionalArrowLength(3)
+        (document.getElementById('graph'))
+        .dagMode('lr')
+        .dagLevelDistance(150)
+        //.d3Force('collision', d3.forceCollide(node => Math.sqrt(100 / (node.level + 1)) * NODE_REL_SIZE))
+        //.d3VelocityDecay(1.05)       
         .nodeId('id')
         .nodeAutoColorBy('group')
+        .nodeVal('group')
+       // .cooldownTicks(0) // pre-defined layout, cancel force engine iterations
+        .linkDirectionalArrowLength(3)
+        .linkDirectionalArrowRelPos(1)
+        .linkCurvature(d =>
+          0.07 * // max curvature
+          //   curve outwards from source, using gradual straightening within a margin of a few px
+          Math.max(-1, Math.min(1, (d.source.x - d.target.x) / 5)) *
+          Math.max(-1, Math.min(1, (d.target.y - d.source.y) / 5))
+        )
         .nodeCanvasObject((node, ctx, globalScale) => {
           const label = node.id;
-          const fontSize = 12/globalScale;
+          const fontSize = 12 / globalScale;
           ctx.font = `${fontSize}px Sans-Serif`;
           const textWidth = ctx.measureText(label).width;
           const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
@@ -37,7 +60,10 @@
           ctx.fillStyle = color;
           const bckgDimensions = node.__bckgDimensions;
           bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-        });
+        })
+        .onNodeClick(node => window.open(`/details/${node.kind}/${node.id}`, '_blank'))
+        .graphData(data)
+      //Graph.zoomToFit();
     });
   </script>
 </body>

@@ -1,0 +1,416 @@
+{
+  "nodes": [
+    {
+      "id": "cnb-dotnetcore-image",
+      "kind": "image",
+      "group": 100
+    },
+    {
+      "id": "cnb-nodejs-image",
+      "kind": "image",
+      "group": 100
+    },
+    {
+      "id": "cnb-springboot-image",
+      "kind": "image",
+      "group": 100
+    },
+    {
+      "id": "dotnetcore-builder",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "nodejs-builder",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "springboot-builder",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "springboot-builder-11.0.10",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "springboot-builder-11.0.12",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "springboot-builder-11.0.12-cve",
+      "kind": "builder",
+      "group": 2
+    },
+    {
+      "id": "awesomedemo-stack",
+      "kind": "clusterstacks",
+      "group": 3
+    },
+    {
+      "id": "paketobuildpacks/build:base-cnb",
+      "kind": "buildImage",
+      "group": 4
+    },
+    {
+      "id": "paketobuildpacks/run:base-cnb",
+      "kind": "runImage",
+      "group": 5
+    },
+    {
+      "id": "awesomedemo-store",
+      "kind": "clusterstores",
+      "group": 6
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/java",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "awesomedemo-store-v1",
+      "kind": "clusterstores",
+      "group": 6
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/java:5.5.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "awesomedemo-store-v2",
+      "kind": "clusterstores",
+      "group": 6
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/java:5.13.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "yetanother-store",
+      "kind": "clusterstores",
+      "group": 6
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/java:5.8.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/spring-boot",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "yetanother-store-5.9.0",
+      "kind": "clusterstores",
+      "group": 6
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/java:5.9.1",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "kind": "buildpack",
+      "group": 7
+    },
+    {
+      "id": "gcr.io/paketo-buildpacks/spring-boot",
+      "kind": "buildpack",
+      "group": 7
+    }
+  ],
+  "links": [
+    {
+      "source": "cnb-dotnetcore-image",
+      "target": "dotnetcore-builder",
+      "value": 10
+    },
+    {
+      "source": "cnb-nodejs-image",
+      "target": "nodejs-builder",
+      "value": 10
+    },
+    {
+      "source": "cnb-springboot-image",
+      "target": "springboot-builder-11.0.12-cve",
+      "value": 10
+    },
+    {
+      "source": "dotnetcore-builder",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "dotnetcore-builder",
+      "target": "yetanother-store",
+      "value": 10
+    },
+    {
+      "source": "nodejs-builder",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "nodejs-builder",
+      "target": "yetanother-store",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder",
+      "target": "awesomedemo-store-v1",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.10",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.10",
+      "target": "awesomedemo-store-v1",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.12",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.12",
+      "target": "awesomedemo-store-v2",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.12-cve",
+      "target": "awesomedemo-stack",
+      "value": 10
+    },
+    {
+      "source": "springboot-builder-11.0.12-cve",
+      "target": "awesomedemo-store-v2",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-stack",
+      "target": "paketobuildpacks/build:base-cnb",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-stack",
+      "target": "paketobuildpacks/run:base-cnb",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store",
+      "target": "gcr.io/paketo-buildpacks/java",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store",
+      "target": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store",
+      "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store",
+      "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v1",
+      "target": "gcr.io/paketo-buildpacks/java:5.5.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v1",
+      "target": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v1",
+      "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v1",
+      "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v1",
+      "target": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v2",
+      "target": "gcr.io/paketo-buildpacks/java:5.13.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v2",
+      "target": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v2",
+      "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v2",
+      "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "value": 10
+    },
+    {
+      "source": "awesomedemo-store-v2",
+      "target": "ghcr.io/alexandreroman/cve-2021-44228-workaround-buildpack",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store",
+      "target": "gcr.io/paketo-buildpacks/java:5.8.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store",
+      "target": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store",
+      "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store",
+      "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store",
+      "target": "gcr.io/paketo-buildpacks/spring-boot",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store-5.9.0",
+      "target": "gcr.io/paketo-buildpacks/java:5.9.1",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store-5.9.0",
+      "target": "gcr.io/paketo-buildpacks/go:0.12.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store-5.9.0",
+      "target": "gcr.io/paketo-buildpacks/nodejs:0.11.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store-5.9.0",
+      "target": "gcr.io/paketo-buildpacks/dotnet-core:0.9.0",
+      "value": 10
+    },
+    {
+      "source": "yetanother-store-5.9.0",
+      "target": "gcr.io/paketo-buildpacks/spring-boot",
+      "value": 10
+    }
+  ]
+}
