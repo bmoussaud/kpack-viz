@@ -26,7 +26,7 @@ note:
 ### Docker
 
 ````
-docker run xxxxx
+docker run -p 8080:8080 -e KUBECONFIG=/.kube/config -v <path/to/your/kubeconfig/file.yml>:/.kube/config ghcr.io/bmoussaud/kpack-viz
 ````
 
 ### Kubernetes
