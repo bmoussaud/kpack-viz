@@ -37,7 +37,7 @@ undeploy-k8s-$(ENV):
 	@printf "`tput bold`= Delete Kubernetes configuration $@`tput sgr0`\n"	
 	kapp delete  $(KAPP_FLAGS) -a $(APP)
 
-.generated/$(ENV): config-$(ENV)/values.yaml
+.generated/$(ENV): config/*.yaml config-$(ENV)/values.yaml 	
 	@printf "`tput bold`= Generate $(ENV) Kubernetes configuration $@`tput sgr0`\n"
 	ytt --ignore-unknown-comments -f config -f config-$(ENV) -f config-access --output-files $@
 

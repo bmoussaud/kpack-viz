@@ -12,7 +12,7 @@ metadata:
     #! so that the new configuration is applied.
     kapp.k14s.io/update-strategy: fallback-on-replace
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels: #@ labels_for_component("webui")
   template:
@@ -22,7 +22,8 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/path: "/actuator/prometheus"
         prometheus.io/port:  "8080"
-    spec:
+    spec:     
+      serviceAccount: kpack-viz-sa
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -37,6 +38,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
       containers:
       - image: ghcr.io/bmoussaud/kpack-viz
+        imagePullPolicy: Always
         name: webui
         resources:
           limits:
