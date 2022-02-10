@@ -20,20 +20,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
       - uses: buildpacks/github-actions/setup-pack@v4.4.2
         with:
           pack-version: 0.21.1
+      
       - uses: actions/setup-java@v2
         with:
           distribution: adopt
           java-version: 17
-          cache: maven
-      - name: Log in to the container registry
-        uses: docker/login-action@v1.12.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
+          cache: maven      
       
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -44,5 +40,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Deploy artifacts
         run: make build deploy
