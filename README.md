@@ -9,6 +9,8 @@ This project offers a graphical user interface allowing to display the CRD Resou
 * clusterbuilder
 * buildpacks.
 
+![kpack-viz screenshot](images/app.png)
+
 ## Running the app
 
 ### Java
