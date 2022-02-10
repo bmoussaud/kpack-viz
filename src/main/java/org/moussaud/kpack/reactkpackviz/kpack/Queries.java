@@ -46,8 +46,7 @@ public class Queries {
     public void builders(DataSet ds) {
         var context = new CustomResourceDefinitionContext.Builder()
                 .withVersion("v1alpha2")
-                .withGroup("kpack.io")
-                .withScope("Namespaced")
+                .withGroup("kpack.io")                
                 .withPlural("builders")
                 .build();
 
