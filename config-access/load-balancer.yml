@@ -1,0 +1,6 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind": "Service", "metadata":{"name":"webui"}}),expects=1
+---
+spec:
+  type: LoadBalancer

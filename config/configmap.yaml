@@ -1,0 +1,20 @@
+#@ load("@ytt:data", "data")
+#@yaml/text-templated-strings
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: #@ data.values.NAMESPACE
+  annotations:
+    #! This ConfigMap is versioned, since we want to restart pods which rely
+    #! on this object when there's an update.
+    kapp.k14s.io/versioned: ""
+data:
+  application.yml: |    
+    server:
+      port: 8080
+    logging:
+      level:
+        org.moussaud.kpack: "error"
+   

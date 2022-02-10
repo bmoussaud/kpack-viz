@@ -1,0 +1,60 @@
+#@ load("@ytt:data", "data")
+#@ load("helpers.star", "labels_for_component")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webui
+  namespace: #@ data.values.NAMESPACE
+  labels: #@ labels_for_component("webui")
+  annotations:
+    #! Pods will be recreated when a new ConfigMap version is available,
+    #! so that the new configuration is applied.
+    kapp.k14s.io/update-strategy: fallback-on-replace
+spec:
+  replicas: 2
+  selector:
+    matchLabels: #@ labels_for_component("webui")
+  template:
+    metadata:
+      labels: #@ labels_for_component("webui")
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port:  "8080"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - app
+                topologyKey: kubernetes.io/hostname
+      containers:
+      - image: ghcr.io/bmoussaud/kpack-viz
+        name: webui
+        resources:
+          limits:
+            memory: 1Gi
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health/liveness
+          initialDelaySeconds: 60
+          periodSeconds: 2
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health/readiness
+          initialDelaySeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: config       

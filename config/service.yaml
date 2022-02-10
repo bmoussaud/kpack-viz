@@ -1,0 +1,16 @@
+#@ load("@ytt:data", "data")
+#@ load("helpers.star", "labels_for_component")
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webui
+  namespace: #@ data.values.NAMESPACE
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector: #@ labels_for_component("webui")
+

@@ -1,0 +1,20 @@
+#@data/values
+---
+#! Set application name.
+APP: kpack-viz
+
+#! Set target namespace.
+NAMESPACE: kpack-viz-dev
+
+#! Set the public-facing domain used for accessing the application.
+DOMAIN: kpack-viz.mytanzu.xyz
+
+TLS: false
+
+INGRESS_CLASS: contour
+
+#! Set cert-manager cluster issuer to use when ingress TLS is enabled.
+CERT_MANAGER_CLUSTER_ISSUER: letsencrypt-prod
+
+
+
