@@ -19,12 +19,6 @@ jobs:
         with:
           distribution: adopt
           java-version: 17
-          cache: maven
-      - name: Log in to the container registry
-        uses: docker/login-action@v1.12.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
+          cache: maven      
       - name: Deploy artifacts
         run: make build deploy
