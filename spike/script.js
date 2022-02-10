@@ -13,7 +13,7 @@ function crd_menu(element, crd) {
   var input = document.createElement('input');
   input.setAttribute('class', 'form-check-input flex-shrink-0');
   input.setAttribute('type', 'checkbox');
-  input.setAttribute('checked', '1');
+  input.setAttribute('checked', 1);
   input.setAttribute('onclick', 'updateCheckboxNode(this);');
   input.setAttribute('id', 'cb_' + element)
 
@@ -26,17 +26,47 @@ function crd_menu(element, crd) {
   crd.appendChild(label)
 }
 
-// called onclick of toppings checkboxes
-function updateCheckboxNode(e) {
-  console.log("Update Checkbox Node " + e)
-  console.log(e.getAttribute('checked'));
-  if (e.getAttribute('checked') == 1) {   
-    e.setAttribute('checked', '0');
-  } else {   
-    e.setAttribute('checked', '1');
-  }
+function check_all_menu(crd) {
+  var label = document.createElement('label');
+  label.setAttribute('class', 'list-group-item d-flex gap-2');
+
+  var input = document.createElement('input');
+  input.setAttribute('class', 'form-check-input flex-shrink-0');
+  input.setAttribute('type', 'checkbox');
+  input.setAttribute('checked', 1);
+  input.setAttribute('onclick', 'checkedAll(this);');
+  input.setAttribute('id', 'all')
+
+  var span = document.createElement('span');
+  span.innerHTML = 'Check All';
+
+  label.appendChild(input)
+  label.appendChild(span)
+
+  crd.appendChild(label)
 }
 
+// called onclick of toppings checkboxes
+function updateCheckboxNode(e) {
+  //console.log(">> Update Checkbox Node " + e.id + " -> " + e.checked)
+  var currentValue = e.getAttribute('checked')  
+  if (currentValue == 1) {
+    e.checked = 0
+    e.setAttribute('checked', 0);
+  } else {
+    e.checked = 1
+    e.setAttribute('checked', 1);
+  }
+  //console.log("<< Update Checkbox Node " + e.id + " -> " + e.checked + '/' + e.getAttribute('checked'))
+}
+
+function checkedAll(allCheckbox) {
+  var allCheckboxes = document.getElementsByTagName('input');
+  for (var i = 0; i < allCheckboxes.length; i++) {
+    var curCheckbox = allCheckboxes[i];
+    updateCheckboxNode(curCheckbox)
+  }
+}
 
 function createGraph() {
   console.log("Creating graph");
@@ -51,6 +81,7 @@ function createGraph() {
       crd.removeChild(crd.lastChild);
     }
     Array.from(crds).sort().forEach(element => crd_menu(element, crd));
+    check_all_menu(crd)
 
     const highlightNodes = new Set();
     const highlightLinks = new Set();
@@ -65,8 +96,10 @@ function createGraph() {
         e = document.getElementById('cb_' + node.kind)
         if (e == null)
           return true;
-        else
+        else {
+          //console.log('nodeVisibility => ' + e.getAttribute('id') + ':' + e.getAttribute('checked')+' ? '+(e.getAttribute('checked') == 1))
           return e.getAttribute('checked') == 1
+        }
       })
       .linkVisibility((link) => {
         source_node = document.getElementById('cb_' + link.source.kind)

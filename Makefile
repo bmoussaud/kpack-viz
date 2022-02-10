@@ -9,6 +9,9 @@ KAPP_FLAGS:= --diff-changes --yes
 
 APP:= kpack-viz-$(ENV)
 
+run-spike:
+	python3 -m http.server
+
 clean:
 	-rm -rf target
 
