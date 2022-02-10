@@ -4,7 +4,15 @@ name: Build and deploy
 #  push:
 #    branches: [ k8s ]
 
-on: push
+on:
+  #schedule:
+  #  - cron: '19 16 * * *'
+  push:
+    branches: [ main ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
 
 jobs:
   build-and-deploy:
@@ -19,6 +27,22 @@ jobs:
         with:
           distribution: adopt
           java-version: 17
-          cache: maven      
+          cache: maven
+      - name: Log in to the container registry
+        uses: docker/login-action@v1.12.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+      
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy artifacts
         run: make build deploy
