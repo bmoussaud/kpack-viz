@@ -1,8 +1,8 @@
 name: Build and deploy
 
-on:
-  push:
-    branches: [ k8s ]
+#on:
+#  push:
+#    branches: [ k8s ]
 
 jobs:
   build-and-deploy:
