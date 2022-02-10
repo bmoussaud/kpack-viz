@@ -7,10 +7,10 @@
 		<version>2.6.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.moussaud.kpack</groupId>
-	<artifactId>react-kpack-viz</artifactId>
+	<groupId>org.bmoussaud.kpack</groupId>
+	<artifactId>kpack-viz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>react-kpack-viz</name>
+	<name>kpack-viz</name>
 	<description>Visualize kpack resources</description>
 	<properties>
 		<java.version>17</java.version>
@@ -41,6 +41,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
