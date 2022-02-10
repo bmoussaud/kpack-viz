@@ -4,6 +4,8 @@ name: Build and deploy
 #  push:
 #    branches: [ k8s ]
 
+on: push
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
