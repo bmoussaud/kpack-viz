@@ -29,8 +29,7 @@ public class Queries {
 
         var context = new CustomResourceDefinitionContext.Builder()
                 .withVersion("v1alpha2")
-                .withGroup("kpack.io")
-                .withScope("Namespaced")
+                .withGroup("kpack.io")                
                 .withPlural("images")
                 .build();
 
