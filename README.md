@@ -40,8 +40,8 @@ Note: the makefile relies on `ytt` and `kapp` from [Carvel.Dev](https://carvel.d
 if you need to manage other environments (ex `uat`, `prod`),
 1. Create a new directory `config-<env>`
 2. Add a ``config-<env>/values.yaml` file
-3. Run `make deploy-k8s-<env>` to deploy the application
-4. Run `make undeploy-k8s-<env>` to deploy the application
+3. Run `make deploy-k8s-<env> ENV=<env>` to deploy the application
+4. Run `make undeploy-k8s-<env> ENV=<env>` to deploy the application
 
 
 ## Dependencies:
