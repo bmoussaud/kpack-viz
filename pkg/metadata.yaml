@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kpackviz.bmoussaud.github.com
+spec:
+  displayName: KPack Viz
+  longDescription: Display the CRD Resources and their relationships managed by the kpack Project defined in a Kubernetes cluster 
+  shortDescription: Display the CRD Resources and their relationships managed by the kpack Project defined in a Kubernetes cluster
+  providerName: Benoit Moussaud
+  maintainers:
+  - name: Benoit Moussaud
+  supportDescription: "Go to github.com/bmoussaud/kpack-viz for documentation"

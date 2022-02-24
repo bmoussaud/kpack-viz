@@ -2,3 +2,14 @@ target
 .DS_Store
 .generated
 config-tools/
+
+.DS_Store
+agent/bundle
+_tmp*.yml
+out
+tmp
+pkg/.imgpkg
+pkg/config
+pkg/package.yaml
+repo
+config-dev/values.yml

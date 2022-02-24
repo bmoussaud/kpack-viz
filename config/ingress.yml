@@ -1,0 +1,21 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: #@ data.values.NAMESPACE
+  annotations:
+    kubernetes.io/ingress.class: #@ data.values.INGRESS_CLASS
+spec:
+  rules:
+  - host: #@ data.values.DOMAIN
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /
+        backend:
+          service:
+            name: webui
+            port:
+              number: 80

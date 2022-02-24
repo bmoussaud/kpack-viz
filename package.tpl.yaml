@@ -1,0 +1,27 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: #@ "kpack-viz.bmoussaud.github.com.{}".format(data.values.app.version)
+spec:
+  refName: kpack-viz.bmoussaud.github.com
+  version: #@ str(data.values.app.version)
+  releasedAt: #@ data.values.releaseDate
+  licenses:
+  - "Apache 2.0"
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: #@ "ghcr.io/bmoussaud/kpack-viz:{}".format(data.values.app.version)
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+      deploy:
+      - kapp: {}

@@ -19,11 +19,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: vmware-tanzu/carvel-setup-action@v1
       - uses: actions/checkout@v2
       
       - uses: buildpacks/github-actions/setup-pack@v4.4.2
         with:
-          pack-version: 0.21.1
+          pack-version: 0.23.0
       
       - uses: actions/setup-java@v2
         with:
@@ -42,4 +43,4 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Deploy artifacts
-        run: make build deploy
+        run: make push
