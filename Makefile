@@ -26,10 +26,10 @@ clean:
 	rm -rf target pkg/.imgpkg pkg/config pkg/package.yaml repo
 
 
-build: target/kpack-viz.jar
+build: check-carvel
 	ytt -f package.tpl.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > pkg/package.yaml
 	rm -rf pkg/config pkg/.imgpkg && cp -a config pkg/
-	mvn -B -pl org.bmoussaud.kpack:kpack-viz clean package spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${OCI_IMAGE}	
+	mvn -B -pl org.bmoussaud.kpack:kpack-viz clean package spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${APP_IMAGE}	
 
 deploy: deploy-webui
 
@@ -41,7 +41,7 @@ target/kpack-viz.jar:
 
 # can't use mvnw (maven wrapper) because of https://github.com/jenv/jenv/issues/232
 deploy-webui: target/kpack-viz.jar
-	mvn -B -pl org.bmoussaud.kpack:kpack-viz clean package spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${OCI_IMAGE}
+	mvn -B -pl org.bmoussaud.kpack:kpack-viz clean package spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${APP_IMAGE}
 	
 
 deploy-k8s-$(ENV): .generated/$(ENV)
