@@ -49,7 +49,8 @@ if you need to manage other environments (ex `uat`, `prod`),
 First, let's add a new repository:
 
 ```shell
-tanzu package repository add kpack-viz --url ghcr.io/bmoussaud/kpack-viz-repo -n tanzu-package-repo-global
+kubectl create ns tanzu-package-repo-global
+tanzu package repository add kpack-viz --url ghcr.io/bmoussaud/kpack-viz-repo -n tanzu-package-repo-global --create-namespace
 ```
 
 Wait a few minutes until the repository gets reconciled.

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 APP:=kpack-viz
-APP_VERSION := 0.1.0-dev
+APP_VERSION := 0.0.1
 APP_IMAGE  := ghcr.io/bmoussaud/$(APP)
 PKG_IMAGE := ghcr.io/bmoussaud/$(APP)-package
 REPO_IMAGE := ghcr.io/bmoussaud/$(APP)-repo
@@ -24,7 +24,6 @@ run-spike:
 
 clean:
 	rm -rf target pkg/.imgpkg pkg/config pkg/package.yaml repo
-
 
 build: check-carvel
 	ytt -f package.tpl.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > pkg/package.yaml
