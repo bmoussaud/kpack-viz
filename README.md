@@ -49,8 +49,8 @@ if you need to manage other environments (ex `uat`, `prod`),
 First, let's add a new repository:
 
 ```shell
-kubectl create ns tanzu-package-repo-global
-tanzu package repository add kpack-viz --url ghcr.io/bmoussaud/kpack-viz-repo -n tanzu-package-repo-global --create-namespace
+#kubectl create ns tanzu-package-repo-global
+tanzu package repository add kpack-viz --url ghcr.io/bmoussaud/kpack-viz-repo:latest -n tanzu-package-repo-global --create-namespace
 ```
 
 Wait a few minutes until the repository gets reconciled.
@@ -100,6 +100,62 @@ tanzu package repository add kpack-viz --url myregistry.corp.internal/custom/kpa
 ```
 
 Wait for the repository reconciliation.
+
+### Package install
+
+Check that this app is available as a package:
+
+```shell
+tanzu package available list kpack-viz.bmoussaud.github.com -n tanzu-package-repo-global
+| Retrieving package versions for kpack-viz.bmoussaud.github.com...
+  NAME                            VERSION    RELEASED-AT
+  kpack-viz.bmoussaud.github.com  0.1.0-dev  2022-03-09 11:22:55 +0100 CET  
+```
+
+Keep the package version handy - you'll need it when it comes to package deployment.
+
+Create file `tcr-values.yml`:
+
+```yaml
+collector:
+  #! Set context where data is collected from.
+  #! Use anything that makes sense to you, so that you can compare the data you collect
+  #! against different "contexts".
+  #! For instance:
+  #! - mycompany-myenv
+  #! - acme-staging
+  context: acme-staging
+
+  #! Set cron schedule, defining how often data collection is done.
+  #! Each run will use its own directory for storing data.
+  #! You may want to use crontab.guru to create cron schedule expressions.
+  #! For instance:
+  #! - 0 0 * * *    every day at midnight
+  #! - 0 6 * * TUE  every Tuesday at 6.00am
+  cronSchedule: 0 6 * * TUE
+
+  db:
+    #! Set how long data is kept in the persistent storage in days.
+    retentionDays: 365
+
+    #! Set storage size to use.
+    size: 1Gi
+
+    #! Set storage class to use.
+    storageClass: vsphere-storageclass
+```
+
+Edit this file accordingly.
+
+Make sure your management cluster has a valid `StorageClass`.
+
+Deploy the package, using the version you have installed:
+
+```shell
+tanzu package install kpack-viz -p kpack-viz.bmoussaud.github.com -v 0.1.0-dev  -n tanzu-package-repo-global 
+```
+
+When the package install is done, note there's a new namespace:
 
 
 ## Dependencies:
