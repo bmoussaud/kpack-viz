@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 APP:=kpack-viz
-APP_VERSION := 0.0.1
+APP_VERSION := 0.1.0-dev
 APP_IMAGE  := ghcr.io/bmoussaud/$(APP)
 PKG_IMAGE := ghcr.io/bmoussaud/$(APP)-package
 REPO_IMAGE := ghcr.io/bmoussaud/$(APP)-repo
@@ -26,8 +26,8 @@ clean:
 	rm -rf target pkg/.imgpkg pkg/config pkg/package.yaml repo
 
 build: check-carvel
-	ytt -f package.tpl.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > pkg/package.yaml
-	rm -rf pkg/config pkg/.imgpkg && cp -a config pkg/
+	ytt -f package.tpl.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > pkg/package.yaml	
+	rm -rf pkg/config pkg/.imgpkg && cp -a config pkg && cat config/values.yaml | sed "s/VERSION: latest/VERSION: ${APP_VERSION}/" > pkg/config/values.yaml
 	mvn -B -pl org.bmoussaud.kpack:kpack-viz clean package spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${APP_IMAGE}	
 
 deploy: deploy-webui
@@ -64,16 +64,12 @@ check-carvel:
 
 push: check-carvel build # Push packages.
 	docker push -q ${APP_IMAGE}:latest
-	docker tag  ${APP_IMAGE}:latest ${APP_IMAGE}:${APP_VERSION}
+	docker tag  ${APP_IMAGE}:latest ${APP_IMAGE}:${APP_VERSION} 
 	docker push ${APP_IMAGE}:${APP_VERSION}	
 
-	mkdir pkg/.imgpkg && ytt -f pkg/config | kbld -f- --imgpkg-lock-output pkg/.imgpkg/images.yml && \
-		imgpkg push --bundle ${PKG_IMAGE}:${APP_VERSION} --file pkg/
-
-	mkdir -p repo/packages && ytt -f pkg/package.yaml -f pkg/metadata.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > repo/packages/$(APP).yaml
-
-	rm -rf repo/.imgpkg && mkdir repo/.imgpkg && kbld -f repo/packages --imgpkg-lock-output repo/.imgpkg/images.yml && \
-		imgpkg push --bundle ${REPO_IMAGE} --file repo/
+	mkdir pkg/.imgpkg && ytt -f pkg/config | kbld -f- --imgpkg-lock-output pkg/.imgpkg/images.yml && imgpkg push --bundle ${PKG_IMAGE}:${APP_VERSION} --file pkg
+	rm -rf repo && mkdir -p repo/packages && ytt -f pkg/package.yaml -f pkg/metadata.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > repo/packages/$(APP).yaml
+	rm -rf repo/.imgpkg && mkdir repo/.imgpkg && kbld -f repo/packages --imgpkg-lock-output repo/.imgpkg/images.yml && imgpkg push --bundle ${REPO_IMAGE}:latest --file repo
 
 
 	

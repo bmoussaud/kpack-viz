@@ -16,5 +16,6 @@ INGRESS_CLASS: contour
 #! Set cert-manager cluster issuer to use when ingress TLS is enabled.
 CERT_MANAGER_CLUSTER_ISSUER: letsencrypt-prod
 
-
+#! Set application version.
+VERSION: latest
 

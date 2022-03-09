@@ -36,10 +36,10 @@ spec:
                       values:
                         - app
                 topologyKey: kubernetes.io/hostname
-      containers:
-      - image: ghcr.io/bmoussaud/kpack-viz
+      containers:      
+      - image: #@ "ghcr.io/bmoussaud/kpack-viz:{}".format(data.values.VERSION)
         imagePullPolicy: Always
-        name: webui
+        name: kpackviz
         resources:
           limits:
             memory: 1Gi

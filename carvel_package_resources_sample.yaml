@@ -1,0 +1,67 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  annotations:
+    kbld.k14s.io/images: |
+      - origins:
+        - resolved:
+            tag: 0.0.1
+            url: ghcr.io/bmoussaud/kpack-viz:0.0.1
+        url: ghcr.io/bmoussaud/kpack-viz@sha256:9bf7ab4d5745ddbe3803044371e7b2ae40ac781ef424c33244d1ed0380924bd4
+  name: kpack-viz.bmoussaud.github.com.0.0.1
+spec:
+  licenses:
+  - Apache 2.0
+  refName: kpack-viz.bmoussaud.github.com
+  releasedAt: "2022-03-08T15:44:59Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/bmoussaud/kpack-viz@sha256:9bf7ab4d5745ddbe3803044371e7b2ae40ac781ef424c33244d1ed0380924bd4
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  r: 0.0.1
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kpackviz.bmoussaud.github.com
+spec:
+  displayName: KPack Viz
+  longDescription: Display the CRD Resources and their relationships managed by the
+    kpack Project defined in a Kubernetes cluster
+  maintainers:
+  - name: Benoit Moussaud
+  providerName: Benoit Moussaud
+  shortDescription: Display the CRD Resources and their relationships managed by the
+    kpack Project defined in a Kubernetes cluster
+  supportDescription: Go to github.com/bmoussaud/kpack-viz for documentation
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageRepository
+metadata:
+  name: simple-package-repository
+spec:
+  fetch:
+    imgpkgBundle:
+      image: ghcr.io/bmoussaud/kpack-viz-repo:sha256-0a0baf8240a3e9bc921ee718d85bfc404c9d448c38029da252fae98a4943ba2d.imgpkg
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: pkg-demo  
+spec:
+  serviceAccountName: default-ns-sa
+  packageRef:
+    refName: kpack-viz.bmoussaud.github.com.0.0.1
+    versionSelection:
+      constraints: 0.0.1
