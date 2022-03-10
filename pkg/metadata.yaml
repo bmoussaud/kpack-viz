@@ -3,7 +3,7 @@ kind: PackageMetadata
 metadata:
   name: kpackviz.bmoussaud.github.com
 spec:
-  displayName: KPack Viz
+  displayName: kpack-viz
   longDescription: Display the CRD Resources and their relationships managed by the kpack Project defined in a Kubernetes cluster 
   shortDescription: Display the CRD Resources and their relationships managed by the kpack Project defined in a Kubernetes cluster
   providerName: Benoit Moussaud

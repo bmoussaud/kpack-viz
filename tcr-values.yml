@@ -1,0 +1,26 @@
+collector:
+  #! Set context where data is collected from.
+  #! Use anything that makes sense to you, so that you can compare the data you collect
+  #! against different "contexts".
+  #! For instance:
+  #! - mycompany-myenv
+  #! - acme-staging
+  context: acme-staging
+
+  #! Set cron schedule, defining how often data collection is done.
+  #! Each run will use its own directory for storing data.
+  #! You may want to use crontab.guru to create cron schedule expressions.
+  #! For instance:
+  #! - 0 0 * * *    every day at midnight
+  #! - 0 6 * * TUE  every Tuesday at 6.00am
+  cronSchedule: 0 6 * * TUE
+
+  db:
+    #! Set how long data is kept in the persistent storage in days.
+    retentionDays: 365
+
+    #! Set storage size to use.
+    size: 1Gi
+
+    #! Set storage class to use.
+    storageClass: vsphere-storageclass

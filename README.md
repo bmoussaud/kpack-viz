@@ -49,57 +49,16 @@ if you need to manage other environments (ex `uat`, `prod`),
 First, let's add a new repository:
 
 ```shell
-#kubectl create ns tanzu-package-repo-global
-tanzu package repository add kpack-viz --url ghcr.io/bmoussaud/kpack-viz-repo:latest -n tanzu-package-repo-global --create-namespace
+tanzu package repository add kpack-viz-repo --url ghcr.io/bmoussaud/kpack-viz-repo:latest -n tanzu-package-repo-global 
 ```
 
 Wait a few minutes until the repository gets reconciled.
 Use this command to get reconciliation status:
 
 ```shell
-tanzu package repository get kpack-viz -n tanzu-package-repo-global
+tanzu package repository list -n tanzu-package-repo-global
+tanzu package repository get kpack-viz-repo -n tanzu-package-repo-global
 ```
-
-### Repository install with airgapped environment
-
-What if you are have no Internet connection? We've got you covered.
-
-Using [imgpkg](https://carvel.dev/imgpkg/) from the Carvel tools,
-you can copy the repository as a TAR file:
-
-```shell
-imgpkg copy -b ghcr.io/bmoussaud/kpack-viz-repo --to-tar kpack-viz-repo.tar
-```
-
-You end up with a TAR archive on your disk, including all container images
-and Kubernetes manifest files you need to deploy this app:
-then you are free to copy this archive to your airgapped environment.
-
-Run this command to deploy the repository into your private container registry:
-
-```shell
-imgpkg copy --tar kpack-viz-repo.tar --to-repo myregistry.corp.internal/custom/kpack-viz-repo --lock-output bundle.lock
-```
-
-A file `bundle.lock` is created: it contains the reference to the relocated package
-repository:
-
-```yaml
----
-apiVersion: imgpkg.carvel.dev/v1alpha1
-kind: BundleLock
-bundle:
-  image: myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a
-```
-
-From now on, you must use this new image, which is hosted on your private
-container registry. Let's install the package repository:
-
-```shell
-tanzu package repository add kpack-viz --url myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a -n tanzu-package-repo-global
-```
-
-Wait for the repository reconciliation.
 
 ### Package install
 
@@ -108,8 +67,8 @@ Check that this app is available as a package:
 ```shell
 tanzu package available list kpack-viz.bmoussaud.github.com -n tanzu-package-repo-global
 | Retrieving package versions for kpack-viz.bmoussaud.github.com...
-  NAME                            VERSION    RELEASED-AT
-  kpack-viz.bmoussaud.github.com  0.1.0-dev  2022-03-09 11:22:55 +0100 CET  
+  NAME                            VERSION    RELEASED-AT  
+  kpack-viz.bmoussaud.github.com  0.1.0-dev  2022-03-09 14:43:23 +0100 CET
 ```
 
 Keep the package version handy - you'll need it when it comes to package deployment.
@@ -152,14 +111,63 @@ Make sure your management cluster has a valid `StorageClass`.
 Deploy the package, using the version you have installed:
 
 ```shell
-tanzu package install kpack-viz -p kpack-viz.bmoussaud.github.com -v 0.1.0-dev  -n tanzu-package-repo-global 
+tanzu package install kpack-viz --package-name kpack-viz.bmoussaud.github.com --version 0.1.0-dev  -n tanzu-package-repo-global
 ```
 
 When the package install is done, note there's a new namespace:
 
+## Uninstall
+
+```shell
+tanzu package repository delete kpack-viz-repo -n tanzu-package-repo-global
+```
 
 ## Dependencies:
 
 * [Bootstrap](https://getbootstrap.com/)
 * [vasturiano/force-graph](https://github.com/vasturiano/force-graph)
 * [Spring Boot](https://spring.io/projects/spring-boot)
+
+
+-----------------------
+
+### Repository install with airgapped environment
+
+What if you are have no Internet connection? We've got you covered.
+
+Using [imgpkg](https://carvel.dev/imgpkg/) from the Carvel tools,
+you can copy the repository as a TAR file:
+
+```shell
+imgpkg copy -b ghcr.io/bmoussaud/kpack-viz-repo --to-tar kpack-viz-repo.tar
+```
+
+You end up with a TAR archive on your disk, including all container images
+and Kubernetes manifest files you need to deploy this app:
+then you are free to copy this archive to your airgapped environment.
+
+Run this command to deploy the repository into your private container registry:
+
+```shell
+imgpkg copy --tar kpack-viz-repo.tar --to-repo myregistry.corp.internal/custom/kpack-viz-repo --lock-output bundle.lock
+```
+
+A file `bundle.lock` is created: it contains the reference to the relocated package
+repository:
+
+```yaml
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+kind: BundleLock
+bundle:
+  image: myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a
+```
+
+From now on, you must use this new image, which is hosted on your private
+container registry. Let's install the package repository:
+
+```shell
+tanzu package repository add kpack-viz --url myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a -n tanzu-package-repo-global
+```
+
+Wait for the repository reconciliation.

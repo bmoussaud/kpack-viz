@@ -62,14 +62,23 @@ check-carvel:
 		$(if $(shell which $(exec)),,$(error "'$(exec)' not found. Carvel toolset is required. See instructions at https://carvel.dev/#install")))
 
 
-push: check-carvel build # Push packages.
-	docker push -q ${APP_IMAGE}:latest
-	docker tag  ${APP_IMAGE}:latest ${APP_IMAGE}:${APP_VERSION} 
-	docker push ${APP_IMAGE}:${APP_VERSION}	
-
+push-old: check-carvel build # Push packages.
+	
 	mkdir pkg/.imgpkg && ytt -f pkg/config | kbld -f- --imgpkg-lock-output pkg/.imgpkg/images.yml && imgpkg push --bundle ${PKG_IMAGE}:${APP_VERSION} --file pkg
 	rm -rf repo && mkdir -p repo/packages && ytt -f pkg/package.yaml -f pkg/metadata.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" > repo/packages/$(APP).yaml
 	rm -rf repo/.imgpkg && mkdir repo/.imgpkg && kbld -f repo/packages --imgpkg-lock-output repo/.imgpkg/images.yml && imgpkg push --bundle ${REPO_IMAGE}:latest --file repo
+
+
+push: check-carvel build # Push packages.	
+	docker push ${APP_IMAGE}:latest
+	docker tag  ${APP_IMAGE}:latest ${APP_IMAGE}:${APP_VERSION} 
+	docker push ${APP_IMAGE}:${APP_VERSION}	
+
+	mkdir pkg/.imgpkg && ytt -f pkg/config | kbld -f- --imgpkg-lock-output pkg/.imgpkg/images.yml && \
+		imgpkg push --bundle ${PKG_IMAGE}:${APP_VERSION} --file pkg
+	rm -rf repo && mkdir -p repo/packages && ytt -f pkg/package.yaml -f pkg/metadata.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" | kbld -f- -f pkg/.imgpkg/images.yml > repo/packages/packages.yaml
+	rm -rf repo/.imgpkg && mkdir repo/.imgpkg && kbld -f repo/packages --imgpkg-lock-output repo/.imgpkg/images.yml && \
+		imgpkg push --bundle ${REPO_IMAGE}:latest --file repo
 
 
 	
