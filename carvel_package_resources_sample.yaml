@@ -34,7 +34,7 @@ spec:
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: PackageMetadata
 metadata:
-  name: kpackviz.bmoussaud.github.com
+  name: kpack-viz.bmoussaud.github.com
 spec:
   displayName: KPack Viz
   longDescription: Display the CRD Resources and their relationships managed by the
