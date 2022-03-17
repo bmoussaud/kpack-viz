@@ -94,10 +94,7 @@ Check the status of the deployed package
 ```shell
 tanzu package installed get kpack-viz -n tanzu-package-repo-global
 ```
-
-
 When the package install is done, note there's a new namespace accordingly to the `my-values.yaml` file
-
 
 ## Uninstall
 
@@ -108,50 +105,9 @@ tanzu package repository delete kpack-viz-repo -n tanzu-package-repo-global
 
 ## Dependencies:
 
+* [Tanzu Packages Explained](https://beyondelastic.com/2022/01/04/tanzu-packages-explained/)
 * [Bootstrap](https://getbootstrap.com/)
 * [vasturiano/force-graph](https://github.com/vasturiano/force-graph)
 * [Spring Boot](https://spring.io/projects/spring-boot)
 
 
------------------------
-
-### Repository install with airgapped environment
-
-What if you are have no Internet connection? We've got you covered.
-
-Using [imgpkg](https://carvel.dev/imgpkg/) from the Carvel tools,
-you can copy the repository as a TAR file:
-
-```shell
-imgpkg copy -b ghcr.io/bmoussaud/kpack-viz-repo --to-tar kpack-viz-repo.tar
-```
-
-You end up with a TAR archive on your disk, including all container images
-and Kubernetes manifest files you need to deploy this app:
-then you are free to copy this archive to your airgapped environment.
-
-Run this command to deploy the repository into your private container registry:
-
-```shell
-imgpkg copy --tar kpack-viz-repo.tar --to-repo myregistry.corp.internal/custom/kpack-viz-repo --lock-output bundle.lock
-```
-
-A file `bundle.lock` is created: it contains the reference to the relocated package
-repository:
-
-```yaml
----
-apiVersion: imgpkg.carvel.dev/v1alpha1
-kind: BundleLock
-bundle:
-  image: myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a
-```
-
-From now on, you must use this new image, which is hosted on your private
-container registry. Let's install the package repository:
-
-```shell
-tanzu package repository add kpack-viz --url myregistry.corp.internal/custom/kpack-viz-repo@sha256:809953020331b52264ca01450de568cac0133addc5d1e1620919b528ea0c776a -n tanzu-package-repo-global
-```
-
-Wait for the repository reconciliation.

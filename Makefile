@@ -73,9 +73,11 @@ push: check-carvel build # Push packages.
 	docker push ${APP_IMAGE}:latest
 	docker tag  ${APP_IMAGE}:latest ${APP_IMAGE}:${APP_VERSION} 
 	docker push ${APP_IMAGE}:${APP_VERSION}	
-
+	@printf "`tput bold`= Generate the PKG Image ${PKG_IMAGE} $@`tput sgr0`\n"	
 	mkdir pkg/.imgpkg && ytt -f pkg/config | kbld -f- --imgpkg-lock-output pkg/.imgpkg/images.yml && \
 		imgpkg push --bundle ${PKG_IMAGE}:${APP_VERSION} --file pkg
+	
+	@printf "`tput bold`= Generate the REPO Image ${REPO_IMAGE} $@`tput sgr0`\n"	
 	rm -rf repo && mkdir -p repo/packages && ytt -f pkg/package.yaml -f pkg/metadata.yaml -v app.version=${APP_VERSION} -v "releaseDate=${BUILD_DATE}" | kbld -f- -f pkg/.imgpkg/images.yml > repo/packages/packages.yaml
 	rm -rf repo/.imgpkg && mkdir repo/.imgpkg && kbld -f repo/packages --imgpkg-lock-output repo/.imgpkg/images.yml && \
 		imgpkg push --bundle ${REPO_IMAGE}:latest --file repo
