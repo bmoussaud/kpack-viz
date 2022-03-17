@@ -14,7 +14,7 @@ spec:
     spec:
       fetch:
       - imgpkgBundle:
-          image: #@ "ghcr.io/bmoussaud/kpack-viz:{}".format(data.values.app.version)
+          image: #@ "ghcr.io/bmoussaud/kpack-viz-package:{}".format(data.values.app.version)
       template:
       - ytt:
           paths:

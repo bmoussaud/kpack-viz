@@ -114,11 +114,18 @@ Deploy the package, using the version you have installed:
 tanzu package install kpack-viz --package-name kpack-viz.bmoussaud.github.com --version 0.1.0-dev  -n tanzu-package-repo-global
 ```
 
+Check the status of the deployed package
+```shell
+tanzu package installed get kpack-viz -n tanzu-package-repo-global
+```
+
+
 When the package install is done, note there's a new namespace:
 
 ## Uninstall
 
 ```shell
+tanzu package installed delete kpack-viz -n tanzu-package-repo-global
 tanzu package repository delete kpack-viz-repo -n tanzu-package-repo-global
 ```
 
