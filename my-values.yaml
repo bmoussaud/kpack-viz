@@ -1,0 +1,5 @@
+#! Set target namespace.
+NAMESPACE: kpack-viz
+#! Set the public-facing domain used for accessing the application.
+DOMAIN: kpack-viz.tools.mytanzu.xyz
+

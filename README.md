@@ -73,45 +73,21 @@ tanzu package available list kpack-viz.bmoussaud.github.com -n tanzu-package-rep
 
 Keep the package version handy - you'll need it when it comes to package deployment.
 
-Create file `tcr-values.yml`:
+Create file `my-values.yml`:
 
 ```yaml
-collector:
-  #! Set context where data is collected from.
-  #! Use anything that makes sense to you, so that you can compare the data you collect
-  #! against different "contexts".
-  #! For instance:
-  #! - mycompany-myenv
-  #! - acme-staging
-  context: acme-staging
-
-  #! Set cron schedule, defining how often data collection is done.
-  #! Each run will use its own directory for storing data.
-  #! You may want to use crontab.guru to create cron schedule expressions.
-  #! For instance:
-  #! - 0 0 * * *    every day at midnight
-  #! - 0 6 * * TUE  every Tuesday at 6.00am
-  cronSchedule: 0 6 * * TUE
-
-  db:
-    #! Set how long data is kept in the persistent storage in days.
-    retentionDays: 365
-
-    #! Set storage size to use.
-    size: 1Gi
-
-    #! Set storage class to use.
-    storageClass: vsphere-storageclass
+#! Set target namespace.
+NAMESPACE: kpack-viz
+#! Set the public-facing domain used for accessing the application.
+DOMAIN: kpack-viz.tools.mytanzu.xyz
 ```
 
 Edit this file accordingly.
 
-Make sure your management cluster has a valid `StorageClass`.
-
 Deploy the package, using the version you have installed:
 
 ```shell
-tanzu package install kpack-viz --package-name kpack-viz.bmoussaud.github.com --version 0.1.0-dev  -n tanzu-package-repo-global
+tanzu package install kpack-viz --package-name kpack-viz.bmoussaud.github.com --version 0.1.0-dev  -n tanzu-package-repo-global -f my-values.yml
 ```
 
 Check the status of the deployed package
@@ -120,7 +96,8 @@ tanzu package installed get kpack-viz -n tanzu-package-repo-global
 ```
 
 
-When the package install is done, note there's a new namespace:
+When the package install is done, note there's a new namespace accordingly to the `my-values.yaml` file
+
 
 ## Uninstall
 
