@@ -96,6 +96,14 @@ tanzu package installed get kpack-viz -n tanzu-package-repo-global
 ```
 When the package install is done, note there's a new namespace accordingly to the `my-values.yaml` file
 
+## Update
+
+if you need to update values,
+
+```shell
+tanzu package installed update kpack-viz  -n tanzu-package-repo-global --values-file ./my-values.yaml
+```
+
 ## Uninstall
 
 ```shell
